@@ -28,7 +28,7 @@ export function AlertDialog() {
   return (
     <div className="dialog-container">
       <Button variant="outlined" onClick={handleClickOpen}>
-        Open Wiz Files
+        Open Files
       </Button>
       <Dialog
         fullWidth={true}

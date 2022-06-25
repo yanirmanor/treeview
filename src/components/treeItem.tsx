@@ -8,8 +8,33 @@ import { treeItemMachine, history } from "../machines/treeMachine";
 import { randomNumBetween } from "../utils";
 import { TreeView } from "./treeView";
 import { TreeItemProps } from "../interfaces/treeview";
+import { motion } from "framer-motion";
+import { memo } from "react";
 
-export function TreeItem({ node }: TreeItemProps) {
+const variantsLoaderText = {
+  show: {
+    opacity: 1,
+    transition: { duration: 0.5 },
+  },
+  hide: {
+    opacity: 0,
+    transition: { duration: 0.5 },
+  },
+};
+
+const variantsRotation = {
+  rotateUp: {
+    rotate: 180,
+    transition: { duration: 0.3 },
+  },
+  rotateDown: {
+    rotate: 0,
+    transition: { duration: 0.3 },
+  },
+};
+
+export function TreeItemRender({ node }: TreeItemProps) {
+  console.log("render TreeItem");
   const { label, description } = node;
 
   const [state, send] = useMachine(treeItemMachine, {
@@ -53,9 +78,12 @@ export function TreeItem({ node }: TreeItemProps) {
           <div>{label}</div>
           {description && <div className="description">{description}</div>}
         </div>
-        <div className={`rotate ${state.matches("expanded") ? "down" : ""}`}>
+        <motion.div
+          variants={variantsRotation}
+          animate={`${state.matches("expanded") ? "rotateUp" : "rotateDown"}`}
+        >
           <KeyboardArrowDownIcon />
-        </div>
+        </motion.div>
       </div>
 
       <Collapse in={state.matches("expanded") ? true : false}>
@@ -63,7 +91,14 @@ export function TreeItem({ node }: TreeItemProps) {
           <div className="Loader-container">
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <CircularProgress size={14} />
-              <div className="Loader-text">Loading...</div>
+              <motion.div
+                initial="hide"
+                variants={variantsLoaderText}
+                animate={state.matches("expanded.loading") ? "show" : "hide"}
+                className="Loader-text"
+              >
+                Loading...
+              </motion.div>
             </Box>
           </div>
         )}
@@ -74,3 +109,5 @@ export function TreeItem({ node }: TreeItemProps) {
     </div>
   );
 }
+
+export const TreeItem = memo(TreeItemRender);

@@ -1,8 +1,9 @@
 import { getNodeDepth } from "../utils";
 import { TreeItem } from "./treeItem";
 import { TreeViewProps, TreeItemInterface } from "../interfaces/treeview";
+import { memo } from "react";
 
-export function TreeView({ treeData }: TreeViewProps) {
+export function TreeViewRender({ treeData }: TreeViewProps) {
   return (
     <div className="TreeView-container">
       {treeData.map((node, index) => {
@@ -16,3 +17,5 @@ export function TreeView({ treeData }: TreeViewProps) {
     </div>
   );
 }
+
+export const TreeView = memo(TreeViewRender);

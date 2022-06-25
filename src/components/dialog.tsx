@@ -31,7 +31,9 @@ export function AlertDialog() {
         Open Files
       </Button>
       <Dialog
+        style={{ maxWidth: "100%" }}
         fullWidth={true}
+        maxWidth="sm"
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
